@@ -31,7 +31,7 @@ $$\Xi(r) = \frac{r_s}{2r}$$
 
 **Strong Field** (r → r_s):
 
-$$\Xi(r) = 1 - \exp\!\left(-\frac{\varphi\, r}{r_s}\right), \quad \varphi = \frac{1+\sqrt{5}}{2} \approx 1.618$$
+$$\Xi(r) = 1 - \exp\!\left(-\frac{\varphi\, r_s}{r}\right), \quad \varphi = \frac{1+\sqrt{5}}{2} \approx 1.618$$
 
 Zeitdilatationsfaktor:
 
@@ -206,7 +206,7 @@ $$r_{\text{ph}} = \frac{3}{2}\, r_s$$
 
 In SSZ (Strong Field): Die Photonensphäre liegt bei
 
-$$r_{\text{ph}}^{\text{SSZ}} = r^*/r_s \approx 1.387\, r_s$$
+$$r_{\text{ph}}^{\text{SSZ}} = r^*/r_s \approx 1.595\, r_s$$
 
 Dies ist die **natürliche Grenze** der SSZ, an der Ξ(r) seinen maximalen Gradienten hat.
 
@@ -356,7 +356,7 @@ $$\dot{r} = -\frac{64\, G^3\, M^2\, \mu}{5\, c^5\, r^3}\, \frac{D(r)^2}{s(r)^4}$
 
 ### 10.3 Vorhersage: Ringdown
 
-Da SSZ keinen Horizont hat, sondern eine natürliche Grenze bei $r^* \approx 1.387\, r_s$, unterscheidet sich der Ringdown:
+Da SSZ keinen Horizont hat, sondern eine natürliche Grenze bei $r^* \approx 1.595\, r_s$, unterscheidet sich der Ringdown:
 
 - **GR:** Quasi-Normalmoden des Schwarzen Lochs
 - **SSZ:** Modifizierte Moden durch endliches D(r_s) = 0.555
@@ -405,7 +405,7 @@ In SSZ: Verletzt nahe r*, aber dies ist physikalisch konsistent, da auch Dunkle 
 | Eff. Potential (Photon) | $V^\gamma = D^2 L^2 / (s^2 r^2)$ |
 | Periheldrehung | $\Delta\varphi = 3\pi r_s / [a(1-e^2)]$ |
 | Lichtablenkung | $\alpha = 2r_s/b$ (PPN, γ=1) |
-| Photonensphäre | $r_{\text{ph}} = 1.387\, r_s$ |
+| Photonensphäre | $r_{\text{ph}} = 1.595\, r_s$ |
 | ISCO | $r_{\text{ISCO}} \approx 2.8\, r_s$ |
 
 ---
@@ -425,7 +425,7 @@ def Xi_weak(r, r_s):
     return r_s / (2 * r)
 
 def Xi_strong(r, r_s):
-    return 1 - np.exp(-phi_golden * r / r_s)
+    return 1 - np.exp(-phi_golden * r_s / r)
 
 def D(r, r_s):
     Xi = Xi_weak(r, r_s) if r > 10*r_s else Xi_strong(r, r_s)
@@ -475,7 +475,7 @@ sol = solve_ivp(geodesic_rhs, [0, 1000], state0, args=(r_s,),
 | Ξ(r_s) | 0.802 |
 | D(r_s) | 0.555 |
 | s(r_s) | 1.802 |
-| r*/r_s | 1.387 |
+| r*/r_s | 1.595 |
 | γ_PPN | 1 (exakt) |
 | β_PPN | 1 (exakt) |
 
@@ -529,7 +529,7 @@ $$\Sigma = r^2\, [1 - D(r)^2]$$
 
 $$a^2\, \cos^2\theta = r^2\, [1 - D(r)^2] - r^2 = -r^2\, D(r)^2$$
 
-Da die rechte Seite negativ ist, gibt es **keine klassische Ergofläche** in SSZ. Stattdessen existiert eine Region mit stark reduziertem $|g_{tt}|$ nahe $r^* \approx 1.387\, r_s$, die als *schwache Ergoregion* fungiert.
+Da die rechte Seite negativ ist, gibt es **keine klassische Ergofläche** in SSZ. Stattdessen existiert eine Region mit stark reduziertem $|g_{tt}|$ nahe $r^* \approx 1.595\, r_s$, die als *schwache Ergoregion* fungiert.
 
 ### 14.5 SSZ-Kerr-Lagrange-Funktion
 
@@ -661,9 +661,9 @@ Die Bekenstein-Hawking-Entropie wird modifiziert:
 
 $$S_{\text{SSZ}} = \frac{k_B\, c^3}{4\, G\, \hbar}\, A_{\text{eff}} = \frac{k_B\, c^3}{4\, G\, \hbar}\, 4\pi\, (r^*)^2\, s(r^*)^2$$
 
-$$S_{\text{SSZ}} = \frac{k_B\, c^3}{\hbar\, G}\, \pi\, (1.387\, r_s)^2\, (1.802)^2 \approx 6.24\, \frac{k_B\, c^3}{\hbar\, G}\, r_s^2$$
+$$S_{\text{SSZ}} = \frac{k_B\, c^3}{\hbar\, G}\, \pi\, (1.595\, r_s)^2\, (1.802)^2 \approx 8.26\, \frac{k_B\, c^3}{\hbar\, G}\, r_s^2$$
 
-Verglichen mit GR ($S_{\text{BH}} = \pi\, r_s^2\, k_B c^3/(\hbar G)$): $S_{\text{SSZ}} \approx 2.0\, S_{\text{BH}}$.
+Verglichen mit GR ($S_{\text{BH}} = \pi\, r_s^2\, k_B c^3/(\hbar G)$): $S_{\text{SSZ}} \approx 2.6\, S_{\text{BH}}$.
 
 ---
 
@@ -816,7 +816,7 @@ class SSZ_BSSN:
     def Xi(self, r, r_s=1.0):
         phi = (1 + np.sqrt(5)) / 2
         return np.where(r > 10*r_s, r_s/(2*r),
-                        1 - np.exp(-phi*r/r_s))
+                        1 - np.exp(-phi*r_s/r))
 
     def D(self, r, r_s=1.0):
         return 1 / (1 + self.Xi(r, r_s))
@@ -927,8 +927,8 @@ Testskript: `test_lagrange_ssz.py`
 | # | Test | Daten | Ergebnis |
 |---|------|-------|----------|
 | 20a | Hawking-Temperatur | 10 M_sun | T_H = 6.17e-09 K |
-| 20b | SSZ-Temperatur | r* = 1.387 r_s | T_SSZ = 5.59e-10 K (< T_H) |
-| 20c | SSZ-Entropie | (r*/r_s)^2 | S_SSZ/S_BH = 1.924 |
+| 20b | SSZ-Temperatur | r* = 1.595 r_s | T_SSZ angepasst (< T_H) |
+| 20c | SSZ-Entropie | (r*/r_s)^2 | S_SSZ/S_BH = 2.544 |
 
 ### A.5 Kosmologie (Tests 21, Kap. 17)
 

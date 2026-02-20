@@ -10,7 +10,7 @@ M_earth=5.972e24; r_s_earth=2*G*M_earth/c**2
 R_earth=6.371e6; R_sun=6.957e8
 
 def Xi_w(r,rs): return rs/(2*r)
-def Xi_s(r,rs): return 1-np.exp(-phi_g*r/rs)
+def Xi_s(r,rs): return 1-np.exp(-phi_g*rs/r)
 def Xi(r,rs):   return Xi_w(r,rs) if r>10*rs else Xi_s(r,rs)
 def D(r,rs):    return 1/(1+Xi(r,rs))
 def s(r,rs):    return 1+Xi(r,rs)
@@ -175,12 +175,12 @@ def rho(r,rs=1):
     h=1e-6; dXi=(Xi(r+h,rs)-Xi(r-h,rs))/(2*h)
     return dXi**2/(1+Xi(r,rs))**2
 test("WEC rho>0 bei 2r_s",rho(2)>0,f"{rho(2):.4e}")
-test("WEC rho>0 bei r*",rho(1.387)>0,f"{rho(1.387):.4e}")
+test("WEC rho>0 bei r*",rho(1.595)>0,f"{rho(1.595):.4e}")
 
 
 # Constants for Kap.14-18 tests
 hbar=1.054571817e-34; k_B=1.380649e-23; H_0=67.4e3/3.0857e22
-def Xi_v(r,rs): return np.where(r>10*rs, rs/(2*r), 1-np.exp(-phi_g*r/rs))
+def Xi_v(r,rs): return np.where(r>10*rs, rs/(2*r), 1-np.exp(-phi_g*rs/r))
 def D_v(r,rs): return 1/(1+Xi_v(r,rs))
 def s_v(r,rs): return 1+Xi_v(r,rs)
 
@@ -283,7 +283,7 @@ test("Hawking T(10 M_sun) ~ 6e-9 K",
 # SSZ-modifizierte Temperatur: T_SSZ ~ 0.7 * T_H
 # T_SSZ = hbar*c/(4*pi*k_B) * |dD/dr|_r* / D(r*)
 rs_10 = 2*G*M_10/c**2
-r_star = 1.387 * rs_10
+r_star = 1.595 * rs_10
 h = rs_10 * 1e-6
 dD_rstar = abs(D(r_star+h, rs_10) - D(r_star-h, rs_10)) / (2*h)
 D_rstar = D(r_star, rs_10)
@@ -306,8 +306,8 @@ ratio_S = S_SSZ / S_BH
 test("S_SSZ > S_BH (groesserer Horizont)",
      ratio_S > 1.0,
      f"S_SSZ/S_BH = {ratio_S:.3f}, (r*/r_s)^2 = {(r_star/rs_10)**2:.3f}")
-test("S_SSZ ~ 1.9 * S_BH",
-     1.5 < ratio_S < 2.5,
+test("S_SSZ ~ 2.5 * S_BH",
+     2.0 < ratio_S < 3.5,
      f"Faktor {ratio_S:.3f}")
 
 # TEST 21: Kosmologie / Friedmann (Kap.17)
