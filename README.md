@@ -101,4 +101,32 @@ Produces CSV files, JSON summary, and H(z)/growth plots.
 
 ## License
 
-All rights reserved. © 2026 Carmen N. Wrede, Lino P. Casu
+This project is licensed under the **Anti-Capitalist Software License v1.4**.
+
+See [LICENSE.md](LICENSE.md) for the full license text.
+
+**Core Principle:** Science should serve humanity, not profit.
+
+### You are free to:
+- Use, study, share, and modify this software for personal, educational, or non-profit purposes
+- Publish scientific results obtained using this software (with attribution)
+
+### You may not:
+- Use this software for commercial purposes or in the service of capitalist enterprises
+- Use this software in military, surveillance, or law enforcement contexts
+- Incorporate this software into closed-source commercial products
+
+### Citation
+
+If you use this software in scientific work, please cite:
+
+```bibtex
+@article{wrede2026lagrange,
+  title={Lagrange and Hamilton Formulation of Segmented Spacetime (SSZ)},
+  author={Wrede, Carmen N. and Casu, Lino P.},
+  year={2026},
+  note={Software available at https://github.com/error-wtf/ssz-lagrange}
+}
+```
+
+© 2025–2026 Carmen N. Wrede, Lino P. Casu
